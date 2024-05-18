@@ -1,0 +1,63 @@
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+}
+.styled-table thead tr {
+    background-color: #5D87FF;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #5D87FF;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #5D87FF;
+}
+
+.searchbar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 25px;
+    border: 1px solid #d4d4d4;
+    padding: 5px;
+}
+
+.search_input {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    padding: 0 10px;
+    font-size: 12px;
+    color: #333;
+}
+
+.search_icon {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0 10px;
+}
+.add_button {
+    right: 20px;
+    top: 90px;
+    transform: translateY(-50%);
+}
