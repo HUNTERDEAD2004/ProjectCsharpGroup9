@@ -61,3 +61,32 @@
     top: 90px;
     transform: translateY(-50%);
 }
+
+.table-custom {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+    .table-custom th, .table-custom td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+.btn-role {
+    border-radius: 4px;
+    padding: 5px 10px;
+    color: white;
+}
+
+.role-admin {
+    background-color: #d9534f; /* Red background for admin */
+}
+
+.role-user {
+    background-color: #5bc0de; /* Blue background for user */
+}
+.btn-custom {
+    margin-right: 5px;
+}
