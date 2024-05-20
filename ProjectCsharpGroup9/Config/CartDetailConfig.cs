@@ -9,7 +9,7 @@ namespace ProjectCsharpGroup9.Config
         public void Configure(EntityTypeBuilder<CartDetails> builder)
         {
             builder.HasKey(p => p.CartDetailID);
-            builder.HasOne(p => p.Cart).WithMany(p => p.CartDetails).HasForeignKey(p => p.CartDetailID);
+            builder.HasOne(p => p.Cart).WithMany(p => p.CartDetails).HasForeignKey(p => p.CartID);
             builder.HasOne(p => p.Product).WithMany(p => p.CartDetails).HasForeignKey(p => p.ProductID);
         }
     }
