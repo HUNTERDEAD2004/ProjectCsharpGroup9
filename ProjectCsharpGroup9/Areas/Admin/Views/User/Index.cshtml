@@ -1,4 +1,6 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@model IEnumerable<ProjectCsharpGroup9.Models.User>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -24,28 +26,48 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Username</th>
+                                <th>Full Name</th>
                                 <th>Email</th>
                                 <th>Số điện thoại</th>
+                                <th>Address</th>
                                 <th>Role</th>
                                 <th>Tùy chỉnh</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>john_doe</td>
-                                <td>john@example.com</td>
-                                <td>0123456789</td>
-                                <td>
-                                    <button class="btn btn-role @* @(user.Role == "admin" ? "role-admin" : user.Role == "user" ? "role-user") *@">
-                                        Admin
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary btn-custom">Edit</button>
-                                    <button class="btn btn-sm btn-danger">Delete</button>
-                                </td>
-                            </tr>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Address)
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-role @* @(user.Role == " admin" ? "role-admin" :
+                                        user.Role=="user" ? "role-user" ) *@">
+                                            Admin
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary btn-custom">Edit</button>
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            }
                             <!-- Add more rows as needed -->
                         </tbody>
                     </table>
