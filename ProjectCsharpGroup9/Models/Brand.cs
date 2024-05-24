@@ -2,6 +2,7 @@
 {
     public class Brand
     {
+        //tao dang test ne
         public Guid BrandID { get; set; }
         public string Name { get; set; }
         public string Icon { get; set; }
