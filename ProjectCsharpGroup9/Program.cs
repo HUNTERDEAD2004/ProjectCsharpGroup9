@@ -8,6 +8,7 @@ namespace ProjectCsharpGroup9
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession(op => op({ }));
 
             var app = builder.Build();
 
@@ -23,6 +24,7 @@ namespace ProjectCsharpGroup9
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 

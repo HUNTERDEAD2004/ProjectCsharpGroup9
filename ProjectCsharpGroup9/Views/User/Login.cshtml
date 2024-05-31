@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div>
+        <div class="d-flex justify-content-center">
+            <h2>Login</h2>
+        </div>
+
+        @using (Html.BeginForm("Login", "User", FormMethod.Post))
+        {
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" />
+            </div>
+            <div class="d-flex flex-row-reverse mt-3">
+                <button type="submit" class="btn btn-dark text-light">Login</button>
+            </div>
+        }
+    </div>
+</div>

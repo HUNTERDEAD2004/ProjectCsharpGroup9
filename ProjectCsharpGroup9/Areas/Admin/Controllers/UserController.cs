@@ -15,7 +15,6 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             _dbContext = new AppDbContext();
         }
         [Route("Index")]
-        [HttpGet]
         public IActionResult Index() // danh sách tài khoản
         {
             var a = _dbContext.Users.ToList();
