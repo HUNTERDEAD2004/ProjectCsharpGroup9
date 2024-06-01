@@ -2,79 +2,87 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <div class="container-fluid">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Product</h5>
-                <div class="">
-                    <div class="">
-                        <div class="searchbar">
-                            <input class="search_input" type="text" name="" placeholder="Search...">
-                            <a href="#" class="search_icon"><i class="ti ti-search"></i></a>
-                            <button class="btn btn-success add_button position-absolute">Add</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="table-responsive pt-4">
-                    <table class="table table-custom table-bordered table-striped">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Username</th>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Số điện thoại</th>
-                                <th>Address</th>
-                                <th>Role</th>
-                                <th>Tùy chỉnh</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UserID)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UserName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.FullName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Email)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Address)
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-role @* @(user.Role == " admin" ? "role-admin" :
-                                        user.Role=="user" ? "role-user" ) *@">
-                                            Admin
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary btn-custom">Edit</button>
-                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                    </td>
-                                </tr>
-                            }
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title fw-semibold mb-4">Product</h5>
+				<div class="">
+					<div class="">
+						<div class="searchbar">
+							<input class="search_input" type="text" name="" placeholder="Search...">
+							<a href="#" class="search_icon"><i class="ti ti-search"></i></a>
+							<button class="btn btn-success add_button position-absolute">Add</button>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive pt-4">
+					<table class="table table-custom table-bordered table-striped">
+						<thead class="thead-dark">
+							<tr>
+								<th>ID</th>
+								<th>Username</th>
+								<th>Full Name</th>
+								<th>Email</th>
+								<th>Số điện thoại</th>
+								<th>Address</th>
+								<th>Role</th>
+								<th>Tùy chỉnh</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.UserID)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.UserName)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.FullName)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Email)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.PhoneNumber)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Address)
+									</td>
+									<td>
+										<button class="btn btn-role @* @(user.Role == " admin" ? "role-admin" :
+											user.Role= ="user" ? "role-user" ) *@">
+											Admin
+										</button>
+									</td>
+									<td>
+										<button class="btn btn-sm btn-primary btn-custom">
+											<a href="~/Admin/User/Edit/{@item.UserID}" class="text -light text-decoration-none">
+												Edit
+											</a>
+										</button>
+										<button class="btn btn-sm btn-danger">
+											<a href="~/Admin/User/Delete/{@item.UserID}" class="text -light text-decoration-none">
+												Delete
+											</a>
+										</button>
+									</td>
+								</tr>
+							}
+							<!-- Add more rows as needed -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>

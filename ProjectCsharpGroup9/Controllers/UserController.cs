@@ -69,7 +69,7 @@ namespace ProjectCsharpGroup9.Controllers
 				{
 					var jsonData = JsonConvert.SerializeObject(data);
 					HttpContext.Session.SetString("user", jsonData);
-					return RedirectToAction("Home", "Admin");
+					return RedirectToAction("Index", "Home");
 				}
 			}
 		}

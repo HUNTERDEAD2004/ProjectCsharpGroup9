@@ -8,7 +8,9 @@ namespace ProjectCsharpGroup9
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddSession(op => op({ }));
+            builder.Services.AddSession(op => {
+                op.IdleTimeout = TimeSpan.FromSeconds(30);
+            });
 
             var app = builder.Build();
 
