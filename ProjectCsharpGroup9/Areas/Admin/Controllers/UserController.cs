@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 using System.Drawing.Printing;
 
