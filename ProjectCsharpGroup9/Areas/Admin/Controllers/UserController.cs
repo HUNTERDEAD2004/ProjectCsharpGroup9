@@ -15,10 +15,16 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             _dbContext = new AppDbContext();
         }
         [Route("Index")]
-        public IActionResult Index() // danh sách tài khoản
+        public IActionResult Index(string find) // danh sách tài khoản
         {
             var a = _dbContext.Users.ToList();
-            return View(a);
+            if(string.IsNullOrEmpty(find)) return View(a);
+            else
+            {
+                var findData = _dbContext.Users.Where(p=>p.UserName.Contains(find)).ToList();
+                if(findData.Count == 0) return View(a);
+                else return View(findData);
+            }
         }
         [Route("Edit/{id}")]
         public IActionResult Edit(Guid id) // view sửa tài khoản
