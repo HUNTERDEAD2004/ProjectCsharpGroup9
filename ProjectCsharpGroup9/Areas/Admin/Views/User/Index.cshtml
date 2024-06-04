@@ -13,11 +13,14 @@
 				<h5 class="card-title fw-semibold mb-4">Product</h5>
 				<div class="">
 					<div class="">
-						<div class="searchbar">
-							<input class="search_input" type="text" name="" placeholder="Search...">
-							<a href="#" class="search_icon"><i class="ti ti-search"></i></a>
-							<button class="btn btn-success add_button position-absolute">Add</button>
-						</div>
+						<form action="/Admin/User/index" method="get">
+							<div class="searchbar">
+								<input class="search_input" type="text" name="find" placeholder="Search...">
+								<button class="btn btn-outline-none p-0"><a href="#" class="search_icon"><i
+											class="ti ti-search"></i></a></button>
+								<button class="btn btn-success add_button position-absolute">Add</button>
+							</div>
+						</form>
 					</div>
 				</div>
 				<div class="table-responsive pt-4">
@@ -57,19 +60,21 @@
 										@Html.DisplayFor(modelItem => item.Address)
 									</td>
 									<td>
-										<button class="btn btn-role @* @(user.Role == " admin" ? "role-admin" :
-											user.Role= ="user" ? "role-user" ) *@">
-											Admin
+										<button class="btn btn-role text-dark">
+											@* Admin *@
+											@(item.RoleID == 1 ? "Admin" : "User")
 										</button>
 									</td>
 									<td>
 										<button class="btn btn-sm btn-primary btn-custom">
-											<a href="~/Admin/User/Edit/{@item.UserID}" class="text -light text-decoration-none">
+											<a asp-area="admin" asp-controller="User" asp-action="Edit"
+												asp-route-id="@item.UserID" class="text-light text-decoration-none">
 												Edit
 											</a>
 										</button>
 										<button class="btn btn-sm btn-danger">
-											<a href="~/Admin/User/Delete/{@item.UserID}" class="text -light text-decoration-none">
+											<a asp-area="Admin" asp-controller="User" asp-action="Delete"
+												asp-route-id="@item.UserID" class="text-light text-decoration-none">
 												Delete
 											</a>
 										</button>

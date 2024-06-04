@@ -11,10 +11,6 @@ namespace ProjectCsharpGroup9.Controllers
 		{
 			_dbContext = new AppDbContext();
 		}
-        //public IActionResult Index()
-        //{
-        //	return View();
-        //}
         public IActionResult SignUp() // view đăng ký
         {
             return View();
@@ -53,7 +49,6 @@ namespace ProjectCsharpGroup9.Controllers
 				return BadRequest(ex);
 			}
 		}
-		//[Route("Login")]
 		public IActionResult Login(string username, string password) //action đăng nhập
 		{
 			if (username == null && password == null) { return View(); }
