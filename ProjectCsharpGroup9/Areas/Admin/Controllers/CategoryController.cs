@@ -34,14 +34,15 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(Category category)
         {
             try
             {
+                category.CategoryID  =  Guid.NewGuid();
                 _dbContext.Categories.Add(category);
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index");
+
             }
             catch
             {

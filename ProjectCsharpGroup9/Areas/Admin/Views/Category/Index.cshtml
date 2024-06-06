@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
 }
 
 <div class="container-fluid">
@@ -15,7 +16,7 @@
                         <div class="searchbar">
                             <input class="search_input" type="text" name="" placeholder="Search...">
                             <a href="#" class="search_icon"><i class="ti ti-search"></i></a>
-                            <button class="btn btn-success add_button position-absolute">Add</button>
+                            <a href="@Url.Action("Create", "Category", new { Areas = "Admin" })" class="btn btn-success add_button position-absolute">Add</a>
                         </div>
                     </div>
                 </div>
@@ -62,3 +63,5 @@
         </div>
     </div>
 </div>
+
+                           
