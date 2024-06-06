@@ -5,56 +5,37 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<h1>SignUp</h1>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SignUp">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDay" class="control-label"></label>
-                <input asp-for="BirthDay" class="form-control" />
-                <span asp-validation-for="BirthDay" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="SignUp">
+    <h3>Sign Up</h3>
+    <label asp-for="FullName">FullName</label>
+    <input asp-for="FullName" placeholder="FullName">
+    <span asp-validation-for="FullName" class="text-danger"></span>      
+    
+    <label asp-for="BirthDay"></label>
+    <input asp-for="BirthDay" />
+    <span asp-validation-for="BirthDay"></span>
+
+    <label asp-for="UserName">Username</label>
+    <input asp-for="UserName" placeholder="Username">
+    <span asp-validation-for="UserName" class="text-danger"></span>
+
+    <label asp-for="Email">Email</label>
+    <input asp-for="Email" placeholder="Email">
+    <span asp-validation-for="Email" class="text-danger"></span>
+
+    <label asp-for="Password">Password</label>
+    <input asp-for="Password" type="password" placeholder="Password">
+    <span asp-validation-for="Password" class="text-danger"></span>
+
+    <button type="submit">Sign Up</button>
+    <div class="social">
+        <div class="go"><i class="fab fa-google"></i>Google</div>
+        <div class="fb"><i class="fab fa-facebook"></i>Facebook</div>
     </div>
-</div>
+    <div class="text-signup">
+        <p>Have an account?</p>
+        <a asp-controller="User" asp-action="Login">Login</a>
+    </div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>

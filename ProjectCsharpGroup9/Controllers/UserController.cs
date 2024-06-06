@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ProjectCsharpGroup9.Controllers
 {
@@ -21,7 +23,10 @@ namespace ProjectCsharpGroup9.Controllers
 			try
 			{
 				user.UserID = Guid.NewGuid();
-				user.RoleID = 2;
+				user.RoleID = 6; //Id role(người dùng) bên cường
+                user.PhoneNumber = "null";
+				user.Address = "null";
+
 				_dbContext.Users.Add(user);
 				//đăng ký thì sẽ tạo luôn giỏ hàng
 				var CartUser = new Cart()
@@ -41,8 +46,8 @@ namespace ProjectCsharpGroup9.Controllers
 				_dbContext.Memberships.Add(Mem);
 				_dbContext.Carts.Add(CartUser);
 				_dbContext.SaveChanges();
-				TempData["status"] = "Tạo tài khoản thành công";
-				return RedirectToAction("Login");
+                TempData["SuccessMessage"] = "Tạo tài khoản thành công!";
+                return RedirectToAction("Login");
 			}
 			catch (Exception ex)
 			{

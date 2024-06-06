@@ -1,3 +1,7 @@
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
+
 namespace ProjectCsharpGroup9
 {
     public class Program
@@ -5,11 +9,18 @@ namespace ProjectCsharpGroup9
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession(op => {
                 op.IdleTimeout = TimeSpan.FromSeconds(30);
+            });
+
+            builder.Services.AddMvc().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
             });
 
             var app = builder.Build();
