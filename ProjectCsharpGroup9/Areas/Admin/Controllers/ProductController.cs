@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using ProjectCsharpGroup9.Models;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 {
@@ -6,10 +8,92 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     [Route("Admin/Product")]
     public class ProductController : Controller
     {
+        AppDbContext _dbContext;
+
+        public ProductController()
+        {
+            _dbContext = new AppDbContext();
+        }
+
         [Route("Index")]
-        public IActionResult Index() //Giao diện product-list
+        public ActionResult Index()
+        {
+            var GetAll = _dbContext.Products.ToList();
+            return View(GetAll);
+        }
+
+        [Route("Details/{id}")]
+        public ActionResult Details(Guid ProductId)
+        {
+            var GetDetails = _dbContext.Products.Find(ProductId);
+            return View(GetDetails);
+        }
+
+        [Route("Create")]
+        public ActionResult Create()
         {
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Product product)
+        {
+            try
+            {
+                _dbContext.Products.Add(product);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Route("Edit/{id}")]
+        public ActionResult Edit(Guid ProductId)
+        {
+            var GetEdit = _dbContext.Products.Find(ProductId);
+            return View(GetEdit);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Product product)
+        {
+            try
+            {
+                var GetEdit = _dbContext.Products.Find(product.ProductID);
+                GetEdit.ProductName = product.ProductName;
+                GetEdit.InputDay = product.InputDay;
+                GetEdit.RegularPrice = product.RegularPrice;
+                GetEdit.DiscountPrice = product.DiscountPrice;
+                GetEdit.Quantity = product.Quantity;
+                GetEdit.ProductWeight = product.ProductWeight;
+                GetEdit.Description = product.Description;
+                _dbContext.Products.Update(GetEdit);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Route("Delete/{id}")]
+        public ActionResult Delete(Guid ProductId)
+        {
+            try
+            {
+                var GetDelete = _dbContext.Products.Find(ProductId);
+                _dbContext.Products.Remove(GetDelete);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [Route("ViewCategory")]
