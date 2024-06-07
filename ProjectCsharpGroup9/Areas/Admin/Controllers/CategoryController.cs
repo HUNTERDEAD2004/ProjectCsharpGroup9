@@ -10,8 +10,6 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     {
         // GET: CategoryController
         AppDbContext _dbContext;
-
-
         public CategoryController()
         {
             _dbContext = new AppDbContext();
