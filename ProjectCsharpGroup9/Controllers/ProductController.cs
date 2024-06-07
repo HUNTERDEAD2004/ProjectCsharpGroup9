@@ -17,7 +17,7 @@ namespace ProjectCsharpGroup9.Controllers
 
         public ActionResult Index()
         {
-            var GetAll = _dbContext.Products.ToList();
+            var GetAll = _dbContext.Products.Include(p => p.Galleries).ToList();
             return View(GetAll);
         }
 
