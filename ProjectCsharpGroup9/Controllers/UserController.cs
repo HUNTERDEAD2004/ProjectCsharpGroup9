@@ -23,7 +23,7 @@ namespace ProjectCsharpGroup9.Controllers
 			try
 			{
 				user.UserID = Guid.NewGuid();
-				user.RoleID = 6; //Id role(người dùng) bên cường
+				user.RoleID = 2; //Id role(người dùng) bên cường
                 user.PhoneNumber = "null";
 				user.Address = "null";
 

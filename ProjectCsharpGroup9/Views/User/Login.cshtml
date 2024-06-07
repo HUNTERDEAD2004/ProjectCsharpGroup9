@@ -1,34 +1,35 @@
 ﻿@{
-    ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+	ViewBag.Title = "Login";
+	Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
 @if (TempData.ContainsKey("SuccessMessage"))
 {
-    <div class="alert alert-success" role="alert">
-        @TempData["SuccessMessage"]
-    </div>
+	<div class="alert alert-success" role="alert">
+		@TempData["SuccessMessage"]
+		@TempData["status"]
+	</div>
 }
-        <form action="">
-    
-            <h3>Login Here</h3>
-            @using (Html.BeginForm("Login", "User", FormMethod.Post))
-            {
-                <label for="username">Username</label>
-                <input type="text" placeholder="Username" id="username">
+<form action="">
 
-                <label for="password">Password</label>
-                <input type="password" placeholder="Password" id="password">
+	<h3>Login Here</h3>
+	@using (Html.BeginForm("Login", "User", FormMethod.Post))
+	{
+		<label for="username">Username</label>
+		<input type="text" placeholder="Username" id="username" name="username">
 
-                <button type="submit">Log In</button>
-            
-                <div class="social">
-                    <div class="go"><i class="fab fa-google"></i>Google</div>
-                    <div class="fb"><i class="fab fa-facebook"></i>Facebook</div>
-                </div>
-                <div class="text-signup">
-                    <p>Create account?</p>
-                    <a asp-controller="User" asp-action="SignUp">Sign Up</a>
-                </div>
-            }
-        </form>
+		<label for="password">Password</label>
+		<input type="password" placeholder="Password" id="password" name="password">
+
+		<button type="submit">Log In</button>
+
+		<div class="social">
+			<div class="go"><i class="fab fa-google"></i>Google</div>
+			<div class="fb"><i class="fab fa-facebook"></i>Facebook</div>
+		</div>
+		<div class="text-signup">
+			<p>Create account?</p>
+			<a asp-controller="User" asp-action="SignUp">Sign Up</a>
+		</div>
+	}
+</form>
