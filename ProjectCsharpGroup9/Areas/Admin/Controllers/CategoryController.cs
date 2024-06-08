@@ -28,7 +28,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             var GetDetails = _dbContext.Categories.Find(Id);
             return View(GetDetails);
         }
-        [Route("Create")]
+        [HttpGet("Create")]
         public ActionResult Create()
         {
             return View();
@@ -49,13 +49,13 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
                 return BadRequest();
             }
         }
-        [Route("Edit/{Id}")]
+        [HttpGet("Edit/{Id}")]
         public ActionResult Edit(Guid Id)
         {
             var GetEdit = _dbContext.Categories.Find(Id);
             return View(GetEdit);
         }
-        [HttpPost]
+        [HttpPost("Edit/{Id}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Category category)
         {

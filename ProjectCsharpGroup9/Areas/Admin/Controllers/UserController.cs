@@ -25,6 +25,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
                 else return View(findData);
             }
         }
+        [HttpGet("{id}")]
         [Route("Edit/{id}")]
         public IActionResult Edit(Guid id) // view sửa tài khoản
         {
@@ -44,7 +45,8 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             var a = _dbContext.Users.Find(id);
             _dbContext.Users.Remove(a);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+			TempData["Message"] = "người dùng đã được xóa";
+			return RedirectToAction("Index");
         }
     }
 }
