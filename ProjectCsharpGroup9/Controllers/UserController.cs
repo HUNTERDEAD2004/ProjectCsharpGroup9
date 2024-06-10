@@ -24,8 +24,6 @@ namespace ProjectCsharpGroup9.Controllers
 			{
 				user.UserID = Guid.NewGuid();
 				user.RoleID = 2; //Id role(người dùng) bên cường
-                user.PhoneNumber = "null";
-				user.Address = "null";
 
 				_dbContext.Users.Add(user);
 				//đăng ký thì sẽ tạo luôn giỏ hàng
