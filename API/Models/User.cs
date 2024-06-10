@@ -21,10 +21,10 @@ namespace ProjectCsharpGroup9.Models
             ErrorMessage ="Số điện thoại sai định dạng")]
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
-        public virtual List<Bill> Bills { get; set; }
-        public virtual List<FeedBack> FeedBacks { get; set; }
-        public virtual Membership Membership { get; set; }
-        public virtual Cart Cart { get; set; }
-        public virtual Role Role { get; set; }
+        public virtual List<Bill>? Bills { get; set; }
+        public virtual List<FeedBack>? FeedBacks { get; set; }
+        public virtual Membership? Membership { get; set; }
+        public virtual Cart? Cart { get; set; }
+        public virtual Role? Role { get; set; }
     }
 }

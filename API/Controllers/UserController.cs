@@ -13,11 +13,13 @@ namespace API.Controllers
         AppDbContext _dbContext;
         Service<User> _UserService;
         DbSet<User> _Users;
+        UserService _Service;
         public UserController()
         {
             _dbContext = new AppDbContext();
             _Users = _dbContext.Users;
             _UserService = new Service<User>(_Users, _dbContext);
+            _Service = new UserService();
         }
 
         [HttpGet("Get-All-User")]
@@ -26,7 +28,7 @@ namespace API.Controllers
             return Ok(_UserService.GetAll());
         }
         [HttpGet("Get-ID-User")]
-        public ActionResult GetByID(string id)
+        public ActionResult GetByID(Guid id)
         {
             return Ok(_UserService.GetByID(id));
         }
@@ -39,7 +41,7 @@ namespace API.Controllers
         [HttpPut("Edit-User")]
         public ActionResult Edit(User user)
         {
-            if(_UserService.Upate(user)) return Ok();
+            if(_Service.UpdateUser(user)) return Ok();
             else return BadRequest();
         }
         [HttpDelete("Delete-User")]
