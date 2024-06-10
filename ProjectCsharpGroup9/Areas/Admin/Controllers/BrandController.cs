@@ -68,7 +68,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
                 existingBrand.Description = brand.Description;
                 if (icon != null && icon.Length > 0)
                 {
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", icon.FileName);
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "icon", icon.FileName);
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         icon.CopyTo(stream);
