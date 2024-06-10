@@ -10,8 +10,6 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     {
         // GET: CategoryController
         AppDbContext _dbContext;
-
-
         public CategoryController()
         {
             _dbContext = new AppDbContext();
@@ -28,17 +26,18 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             var GetDetails = _dbContext.Categories.Find(Id);
             return View(GetDetails);
         }
-        [Route("Create")]
+        [HttpGet("Create")]
         public ActionResult Create()
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Category category)
         {
             try
             {
+                category.CategoryID = Guid.NewGuid();
                 _dbContext.Categories.Add(category);
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index");
@@ -48,13 +47,13 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
                 return BadRequest();
             }
         }
-        [Route("Edit/{Id}")]
+        [HttpGet("Edit/{Id}")]
         public ActionResult Edit(Guid Id)
         {
             var GetEdit = _dbContext.Categories.Find(Id);
             return View(GetEdit);
         }
-        [HttpPost]
+        [HttpPost("Edit/{Id}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Category category)
         {

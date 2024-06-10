@@ -5,6 +5,12 @@
 	ViewData["Title"] = "Index";
 	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+@if (TempData.ContainsKey("SuccessMessage"))
+{
+	<div class="alert alert-success" role="alert">
+		@TempData["SuccessMessage"]
+	</div>
+}
 
 <div class="container-fluid">
 	<div class="container-fluid">
@@ -74,7 +80,7 @@
 										</button>
 										<button class="btn btn-sm btn-danger">
 											<a asp-area="Admin" asp-controller="User" asp-action="Delete"
-												asp-route-id="@item.UserID" class="text-light text-decoration-none">
+											   asp-route-id="@item.UserID" class="text-light text-decoration-none" new { onclick="return confirm('Bạn xác nhận muốn xóa?')">
 												Delete
 											</a>
 										</button>

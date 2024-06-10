@@ -13,17 +13,17 @@ namespace ProjectCsharpGroup9.Controllers
             _db = new AppDbContext();
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
-            var GetAll = _db.Products.ToList();
+            var GetAll = _dbContext.Products.Include(p => p.Galleries).ToList();
             return View(GetAll);
         }
 
-        //public ActionResult AddToCart()
-        //{
-        //    try
-        //    {
-        //        var GetData = _db.Products.Find();
+        public ActionResult Details(Guid ProductId)
+        {
+            var GetDetails = _dbContext.Products.Find(ProductId);
+            return View(GetDetails);
+        }
 
 
         //    catch
