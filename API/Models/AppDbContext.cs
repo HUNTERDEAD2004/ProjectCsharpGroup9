@@ -35,7 +35,6 @@ namespace ProjectCsharpGroup9.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)//Cấu hình cho các đối tượng trong bảng CSDL
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            //base.OnModelCreating(modelBuilder);
         }
     }
 }

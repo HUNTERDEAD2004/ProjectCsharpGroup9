@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 using System.Drawing.Printing;
 
@@ -9,6 +10,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     public class UserController : Controller
     {
         AppDbContext _dbContext;
+        HttpClient _client = new HttpClient();
         public UserController()
         {
             _dbContext = new AppDbContext();
@@ -16,13 +18,22 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         [Route("Index")]
         public IActionResult Index(string find) // danh sách tài khoản
         {
-            var a = _dbContext.Users.ToList();
-            if(string.IsNullOrEmpty(find)) return View(a);
+            //var a = _dbContext.Users.ToList();
+            //if(string.IsNullOrEmpty(find)) return View(a);
+            //else
+            //{
+            //    var findData = _dbContext.Users.Where(p=>p.UserName.Contains(find)).ToList();
+            //    if(findData.Count == 0) return View(a);
+            //    else return View(findData);
+            //}
+            string Url = $@"https://localhost:7276/api/User/Get-All-User";
+            var response = _client.GetStringAsync(Url).Result;
+            List<User> users = JsonConvert.DeserializeObject<List<User>>(response);
+            if (string.IsNullOrEmpty(find)) return View(users);
             else
             {
-                var findData = _dbContext.Users.Where(p=>p.UserName.Contains(find)).ToList();
-                if(findData.Count == 0) return View(a);
-                else return View(findData);
+                var findData = users.Where(p=>p.UserName.Contains(find)).ToList();
+                return View(findData);
             }
         }
         [HttpGet("{id}")]
