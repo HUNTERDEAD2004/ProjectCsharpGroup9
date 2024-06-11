@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 using System;
 using System.Collections.Generic;
@@ -11,91 +11,59 @@ namespace API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        AppDbContext _dbContext;
-
-        public ProductController()
+        HttpClient _client = new HttpClient();
+        [HttpGet("Index")]
+        public ActionResult Index()
         {
-            _dbContext = new AppDbContext();
+            string Url = $@"https://localhost:7276/api/Product/Get-All-Product";
+            var response = _client.GetStringAsync(Url).Result;
+            List<Product> products = JsonConvert.DeserializeObject<List<Product>>(response);
+            return View(products);
+        }
+        [HttpGet("Detail/{id}")]
+        public ActionResult Details(Guid id)
+        {
+            string Url = $@"https://localhost:7276/api/Product/Get-ID-Product?id={id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Product products = JsonConvert.DeserializeObject<Product>(response);
+            return View(products);
+        }
+        [HttpGet("Create")]
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost("Create")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Product product)
+        {
+            string Url = $@"https://localhost:7276/api/Product/Create-Product";
+            var response = _client.PostAsJsonAsync(Url, product).Result;
+            return RedirectToAction("Index");
+        }
+        [HttpGet("Edit/{id}")]
+        public ActionResult Edit(Guid id)
+        {
+            string Url = $@"https://localhost:7276/api/Product/Get-ID-Product?id={id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Product products = JsonConvert.DeserializeObject<Product>(response);
+            return View(products);
+        }
+        [HttpPost("Edit/{id}")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Product product)
+        {
+            string Url = $@"https://localhost:7276/api/Product/Edit-Product";
+            var response = _client.PutAsJsonAsync(Url, product).Result;
+            return RedirectToAction("Index");
+        }
+        [Route("Delete/{id}")]
+        public ActionResult Delete(Guid id)
+        {
+            string Url = $@"https://localhost:7276/api/Product/Delete-Product?id={id}";
+            var response = _client.DeleteAsync(Url).Result;
+            return RedirectToAction("Index");
         }
 
-        [HttpGet("GetAll")]
-        public ActionResult<IEnumerable<Product>> GetAll()
-        {
-            var products = _dbContext.Products.ToList();
-            return Ok(products);
-        }
-
-        [HttpGet("GetById")]
-        public ActionResult<Product> GetById(Guid id)
-        {
-            var product = _dbContext.Products.Find(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(product);
-        }
-
-        [HttpPost("Create-Product")]
-        public ActionResult<Product> Create(Product product)
-        {
-            try
-            {
-                _dbContext.Products.Add(product);
-                _dbContext.SaveChanges();
-
-                return CreatedAtAction(nameof(GetById), new { id = product.ProductID }, product);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut("Update-Product")]
-        public IActionResult Update(Product product)
-        {
-            _dbContext.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                _dbContext.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(product.ProductID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("Delete-Product")]
-        public IActionResult Delete(Guid id)
-        {
-            var product = _dbContext.Products.Find(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _dbContext.Products.Remove(product);
-            _dbContext.SaveChanges();
-
-            return NoContent();
-        }
-
-        private bool ProductExists(Guid id)
-        {
-            return _dbContext.Products.Any(e => e.ProductID == id);
-        }
     }
 }
