@@ -5,13 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace API.Controllers
+namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductController : ControllerBase
+    [Area("Admin")]
+    [Route("Admin/Product")]
+    public class ProductController : Controller
     {
+        AppDbContext _dbContext;
         HttpClient _client = new HttpClient();
+        public ProductController()
+        {
+            _dbContext = new AppDbContext();
+        }
         [HttpGet("Index")]
         public ActionResult Index()
         {
@@ -64,6 +69,5 @@ namespace API.Controllers
             var response = _client.DeleteAsync(Url).Result;
             return RedirectToAction("Index");
         }
-
     }
 }
