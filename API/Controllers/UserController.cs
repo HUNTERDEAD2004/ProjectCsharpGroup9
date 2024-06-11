@@ -35,19 +35,20 @@ namespace API.Controllers
         [HttpPost("Create-User")]
         public ActionResult Create(User user)
         {
-            if (_UserService.Create(user)) return Ok();
+            if (_Service.Create(user)) return Ok();
             else return BadRequest();
         }
+
         [HttpPut("Edit-User")]
         public ActionResult Edit(User user)
         {
-            if(_Service.UpdateUser(user)) return Ok();
+            if (_UserService.Upate(user)) return Ok();
             else return BadRequest();
         }
         [HttpDelete("Delete-User")]
         public ActionResult Delete(Guid id)
         {
-            if(_UserService.Delete(id)) return Ok();
+            if (_UserService.Delete(id)) return Ok();
             else return BadRequest();
         }
     }

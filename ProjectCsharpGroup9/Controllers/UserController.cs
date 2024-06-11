@@ -9,6 +9,7 @@ namespace ProjectCsharpGroup9.Controllers
 	public class UserController : Controller
 	{
 		AppDbContext _dbContext;
+		HttpClient _client = new HttpClient();
 		public UserController()
 		{
 			_dbContext = new AppDbContext();
@@ -17,40 +18,31 @@ namespace ProjectCsharpGroup9.Controllers
         {
             return View();
         }
-        [HttpPost]
-		public IActionResult SignUp(User user) // action đăng ký
+        [HttpPost("User/Create-User")]
+		public ActionResult SignUp(User user) // action đăng ký
 		{
 			try
 			{
-				user.UserID = Guid.NewGuid();
-				user.RoleID = 2; //Id role(người dùng) bên cường
+                user.UserID = Guid.NewGuid();
+                user.RoleID = 2;
+                string Url = $@"https://localhost:7276/api/User/Create-User";
+				var response = _client.PostAsJsonAsync(Url, user).Result;
+				if (response.IsSuccessStatusCode)
+				{
+                    return RedirectToAction("Login");
+                }
+				else
+				{
+					return View();
+				}
+                //TempData["SuccessMessage"] = "Tạo tài khoản thành công!";
 
-				_dbContext.Users.Add(user);
-				//đăng ký thì sẽ tạo luôn giỏ hàng
-				var CartUser = new Cart()
-				{
-					CartID = user.UserID,
-					UserID = user.UserID,
-					CreateDay = DateTime.Now
-				};
-				var Mem = new Membership()
-				{
-					MemberID = user.UserID,
-					UserID = user.UserID,
-					Point = 0,
-					Status = "0",
-					MemberShipRank = "Iron"
-				};
-				_dbContext.Memberships.Add(Mem);
-				_dbContext.Carts.Add(CartUser);
-				_dbContext.SaveChanges();
-                TempData["SuccessMessage"] = "Tạo tài khoản thành công!";
-                return RedirectToAction("Login");
-			}
-			catch (Exception ex)
+            }
+			catch (Exception)
 			{
-				return BadRequest(ex);
+				return BadRequest();
 			}
+
 		}
 		public IActionResult Login(string username, string password) //action đăng nhập
 		{

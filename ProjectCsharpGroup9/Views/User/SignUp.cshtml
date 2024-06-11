@@ -6,7 +6,7 @@
 }
 
 
-<form asp-action="SignUp">
+<form asp-action="SignUp" class="mt-4">
     <h3>Sign Up</h3>
     <label asp-for="FullName">FullName</label>
     <input asp-for="FullName" placeholder="FullName">
@@ -24,9 +24,17 @@
     <input asp-for="Email" placeholder="Email">
     <span asp-validation-for="Email" class="text-danger"></span>
 
+    <label asp-for="PhoneNumber">Phone Number</label>
+    <input asp-for="PhoneNumber" placeholder="PhoneNumber">
+    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
     <label asp-for="Password">Password</label>
     <input asp-for="Password" type="password" placeholder="Password">
     <span asp-validation-for="Password" class="text-danger"></span>
+
+    <label asp-for="Address">Address</label>
+    <input asp-for="Address" placeholder="Address">
+    <span asp-validation-for="Address" class="text-danger"></span>
 
     <button type="submit">Sign Up</button>
     <div class="social">
