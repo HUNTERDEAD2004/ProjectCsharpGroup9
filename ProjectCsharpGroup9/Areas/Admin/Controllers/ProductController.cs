@@ -17,6 +17,10 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 
         [Route("Index")]
         public ActionResult Index()
+        private readonly string _apiBaseUrl = "https://localhost:7276/api/Product";
+        HttpClient _httpClient;
+        
+        public ProductController()
         {
             var GetAll = _dbContext.Products.ToList();
             return View(GetAll);
