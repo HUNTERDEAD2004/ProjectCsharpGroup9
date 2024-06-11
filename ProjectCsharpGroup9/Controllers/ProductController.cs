@@ -15,21 +15,14 @@ namespace ProjectCsharpGroup9.Controllers
 
         public ActionResult Index()
         {
-            var GetAll = _dbContext.Products.Include(p => p.Galleries).ToList();
+            var GetAll = _db.Products.Include(p => p.Galleries).ToList();
             return View(GetAll);
         }
 
         public ActionResult Details(Guid ProductId)
         {
-            var GetDetails = _dbContext.Products.Find(ProductId);
+            var GetDetails = _db.Products.Find(ProductId);
             return View(GetDetails);
         }
-
-
-        //    catch
-        //    {
-        //        return BadRequest();
-        //    }
-        //}
     }
 }
