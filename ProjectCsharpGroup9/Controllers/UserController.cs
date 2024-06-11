@@ -29,13 +29,13 @@ namespace ProjectCsharpGroup9.Controllers
 				var response = _client.PostAsJsonAsync(Url, user).Result;
 				if (response.IsSuccessStatusCode)
 				{
+                    TempData["SuccessMessage"] = "Tạo tài khoản thành công!";
                     return RedirectToAction("Login");
                 }
 				else
 				{
 					return View();
 				}
-                //TempData["SuccessMessage"] = "Tạo tài khoản thành công!";
 
             }
 			catch (Exception)

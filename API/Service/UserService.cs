@@ -15,9 +15,6 @@ namespace API.Service
         {
             try
             {
-                //user.UserID = Guid.NewGuid();
-                //user.RoleID = 2; //Id role(người dùng) bên cường
-
                 _dbContext.Users.Add(user);
                 //đăng ký thì sẽ tạo luôn giỏ hàng
                 var CartUser = new Cart()
