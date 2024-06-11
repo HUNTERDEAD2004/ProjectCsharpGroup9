@@ -19,7 +19,7 @@ namespace ProjectCsharpGroup9.Controllers
         {
             return View();
         }
-        [HttpPost("User/Create-User")]
+        [HttpPost()]
 		public ActionResult SignUp(User user) // action đăng ký
 		{
 			try
@@ -58,10 +58,24 @@ namespace ProjectCsharpGroup9.Controllers
 				}
 				else
 				{
-					var jsonData = JsonConvert.SerializeObject(data);
-					HttpContext.Session.SetString("user", jsonData);
-					return RedirectToAction("Index", "Home");
-				}
+                    var jsonData = JsonConvert.SerializeObject(data);
+                    HttpContext.Session.SetString("user", jsonData);
+
+                    // Redirect based on role
+                    if (data.RoleID == 1)
+                    {
+                        return RedirectToAction("Home", "Admin");
+                    }
+                    else if (data.RoleID == 2)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+						// Handle other roles or invalid roles
+						return BadRequest();
+                    }
+                }
 			}
 		}
 		public IActionResult LogOut() //action đăng xuất

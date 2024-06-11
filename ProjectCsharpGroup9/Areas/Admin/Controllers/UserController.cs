@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 using System.Drawing.Printing;
+using System.Net.Http;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 {
@@ -35,6 +36,33 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             var role = _dbContext.Roles.ToList();
             SelectList listItems = new SelectList(role, "RoleID", "RoleName", selected);
             ViewBag.RoleID = listItems;
+        }
+        [HttpGet("{id}")]
+        [Route("Detail/{id}")]
+        public IActionResult Detail(Guid id)
+        {
+            try
+            {
+                string url = $"https://localhost:7276/api/User/Get-ID-User?id={id}";
+                HttpResponseMessage response = _client.GetAsync(url).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseData = response.Content.ReadAsStringAsync().Result;
+                    User user = JsonConvert.DeserializeObject<User>(responseData);
+                    return View(user);
+                }
+                else
+                {
+                    TempData["Error"] = "Không thể truy xuất dữ liệu người dùng từ API.";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Error: {ex.Message}";
+                return RedirectToAction("Index", "Home");
+            }
         }
         [HttpGet("{id}")]
         [Route("Edit/{id}")]
