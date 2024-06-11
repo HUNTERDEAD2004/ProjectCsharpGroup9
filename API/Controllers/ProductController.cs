@@ -16,13 +16,15 @@ namespace API.Controllers
         Service<Product> _ProductService;
         DbSet<Product> _Product;
         ProductService _Service;
+        IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController()
+        public ProductController(IWebHostEnvironment webHostEnvironment)
         {
             _dbContext = new AppDbContext();
             _Product = _dbContext.Products;
             _ProductService = new Service<Product>(_Product, _dbContext);
             _Service = new ProductService();
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet("Get-All-Product")]
@@ -38,7 +40,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Create-Product")]
-        public ActionResult Create(Product product)
+        public ActionResult Create([FromForm] Product product)
         {
             if (_Service.Create(product)) return Ok();
             else return BadRequest();

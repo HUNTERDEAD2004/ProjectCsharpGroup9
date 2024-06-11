@@ -2,93 +2,66 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
+using System.Net.WebSockets;
 
 namespace ProjectCsharpGroup9.Controllers
 {
     public class ProductController : Controller
     {
-        AppDbContext _dbContext;
-
-        public ProductController()
-        {
-            _dbContext = new AppDbContext();    
-        }
-
+        HttpClient _client = new HttpClient();
+        [HttpGet("Index")]
         public ActionResult Index()
         {
-            var GetAll = _dbContext.Products.Include(p => p.Galleries).ToList();
-            return View(GetAll);
+            string Url = $@"https://localhost:7276/api/Product/Get-All-Product";
+            var response = _client.GetStringAsync(Url).Result;
+            List<Product> products = JsonConvert.DeserializeObject<List<Product>>(response);
+            return View(products);
         }
-
-        public ActionResult Details(Guid ProductId)
+        [HttpGet("Detail/{id}")]
+        public ActionResult Details(Guid id)
         {
-            var GetDetails = _dbContext.Products.Find(ProductId);
-            return View(GetDetails);
+            string Url = $@"https://localhost:7276/api/Product/Get-ID-Product?id={id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Product products = JsonConvert.DeserializeObject<Product>(response);
+            return View(products);
         }
-
+        [HttpGet("Create")]
         public ActionResult Create()
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Product product)
         {
-            try
-            {
-                _dbContext.Products.Add(product);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            string Url = $@"https://localhost:7276/api/Product/Create-Product";
+            var response = _client.PostAsJsonAsync(Url,product).Result;
+            return RedirectToAction("Index");
         }
-
-        public ActionResult Edit(Guid ProductId)
+        [HttpGet("Edit/{id}")]
+        public ActionResult Edit(Guid id)
         {
-            var GetEdit = _dbContext.Products.Find(ProductId);
-            return View(GetEdit);
+            string Url = $@"https://localhost:7276/api/Product/Get-ID-Product?id={id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Product products = JsonConvert.DeserializeObject<Product>(response);
+            return View(products);
         }
-        [HttpPost]
+        [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Product product)
         {
-            try
-            {
-                var GetEdit = _dbContext.Products.Find(product.ProductID);
-                GetEdit.ProductName = product.ProductName;
-                GetEdit.InputDay = product.InputDay;
-                GetEdit.RegularPrice = product.RegularPrice;
-                GetEdit.DiscountPrice = product.DiscountPrice;
-                GetEdit.Quantity = product.Quantity;
-                GetEdit.ProductWeight = product.ProductWeight;
-                GetEdit.Description = product.Description;
-                _dbContext.Products.Update(GetEdit);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            string Url = $@"https://localhost:7276/api/Product/Edit-Product";
+            var response = _client.PutAsJsonAsync(Url, product).Result;
+            return RedirectToAction("Index");
         }
-
-        public ActionResult Delete(Guid ProductId)
+        [Route("Delete/{id}")]
+        public ActionResult Delete(Guid id)
         {
-            try
-            {
-                var GetDelete = _dbContext.Products.Find(ProductId);
-                _dbContext.Products.Remove(GetDelete);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            string Url = $@"https://localhost:7276/api/Product/Delete-Product?id={id}";
+            var response = _client.DeleteAsync(Url).Result;
+            return RedirectToAction("Index");
         }
     }
 }
