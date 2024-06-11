@@ -100,7 +100,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         {
             try
             {
-                string Url = $@"https://localhost:7276/api/Brand/Delete-Brand";
+                string Url = $@"https://localhost:7276/api/Brand/Delete-Brand?id={id}";
                 var response = _client.DeleteAsync(Url).Result;
                 return RedirectToAction("Index");
             }
