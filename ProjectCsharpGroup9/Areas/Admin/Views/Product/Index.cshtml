@@ -5,62 +5,50 @@
 }
 
 <div class="container-fluid">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Product</h5>
-                <div class="">
-                    <div class="">
-                        <div class="searchbar">
-                            <input class="search_input" type="text" name="" placeholder="Search...">
-                            <a href="#" class="search_icon"><i class="ti ti-search"></i></a>
-                            <button class="btn btn-success add_button position-absolute">Add</button>
-                        </div>
-                    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-4">Product List</h5>
+
+            <div class="mb-3">
+                <div class="searchbar">
+                    <input class="search_input form-control" type="text" name="" placeholder="Search...">
+                    <a href="#" class="search_icon"><i class="ti ti-search"></i></a>
+                    <a asp-action="Create" class="btn btn-success add_button position-absolute">Add</a>
                 </div>
-                <div class="">
-                    <div class="">
-                        <table class="styled-table table">
-                            <thead>
-                                <tr>
-                                    <th>Day</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Dom</td>
-                                    <td>6000</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                                        <button type="button" class="btn btn-warning btn-sm">Detail</button>
-                                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr class="active-row">
-                                    <td>Melissa</td>
-                                    <td>5150</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary btn-sm">Edit</button>
-                                        <button type="button" class="btn btn-warning btn-sm">Detail</button>
-                                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                <!-- and so on... -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="styled-table table">
+                    <thead>
+                        <tr>
+                            <th>Input Day</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Regular Price</th>
+                            <th>Discount Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <td>@product.InputDay.ToShortDateString()</td>
+                                <td>@product.ProductName</td>
+                                <td>@product.CategoryId</td>
+                                <td>@product.Quantity</td>
+                                <td>@product.RegularPrice</td>
+                                <td>@product.DiscountPrice</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@product.ProductID" class="btn btn-primary btn-sm">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@product.ProductID" class="btn btn-warning btn-sm">Detail</a>
+                                    <button type="button" onclick="deleteProduct('@product.ProductID')" class="btn btn-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
