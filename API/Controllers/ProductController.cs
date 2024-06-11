@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Service;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectCsharpGroup9.Models;
 using System;
@@ -12,90 +13,49 @@ namespace API.Controllers
     public class ProductController : ControllerBase
     {
         AppDbContext _dbContext;
+        Service<Product> _ProductService;
+        DbSet<Product> _Product;
+        ProductService _Service;
 
         public ProductController()
         {
             _dbContext = new AppDbContext();
+            _Product = _dbContext.Products;
+            _ProductService = new Service<Product>(_Product, _dbContext);
+            _Service = new ProductService();
         }
 
-        [HttpGet("GetAll")]
-        public ActionResult<IEnumerable<Product>> GetAll()
+        [HttpGet("Get-All-Product")]
+        public ActionResult GetAll()
         {
-            var products = _dbContext.Products.ToList();
-            return Ok(products);
+            return Ok(_ProductService.GetAll());
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("Get-Id-product")]
         public ActionResult<Product> GetById(Guid id)
         {
-            var product = _dbContext.Products.Find(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(product);
+            return Ok(_ProductService.GetByID(id));
         }
 
         [HttpPost("Create-Product")]
-        public ActionResult<Product> Create(Product product)
+        public ActionResult Create(Product product)
         {
-            try
-            {
-                _dbContext.Products.Add(product);
-                _dbContext.SaveChanges();
-
-                return CreatedAtAction(nameof(GetById), new { id = product.ProductID }, product);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            if (_Service.Create(product)) return Ok();
+            else return BadRequest();
         }
 
-        [HttpPut("Update-Product")]
+        [HttpPut("edit-Product")]
         public IActionResult Update(Product product)
         {
-            _dbContext.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                _dbContext.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(product.ProductID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            if (_ProductService.Upate(product)) return Ok();
+            else return BadRequest();
         }
 
         [HttpDelete("Delete-Product")]
         public IActionResult Delete(Guid id)
         {
-            var product = _dbContext.Products.Find(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _dbContext.Products.Remove(product);
-            _dbContext.SaveChanges();
-
-            return NoContent();
-        }
-
-        private bool ProductExists(Guid id)
-        {
-            return _dbContext.Products.Any(e => e.ProductID == id);
+            if (_ProductService.Delete(id)) return Ok();
+            else return BadRequest();
         }
     }
 }

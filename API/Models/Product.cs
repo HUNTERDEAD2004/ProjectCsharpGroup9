@@ -12,11 +12,11 @@
         public int Quantity { get; set; }
         public double ProductWeight { get; set; }
         public string Description { get; set; }
-        public virtual List<Gallery> Galleries { get; set; }
-        public virtual List<CartDetails> CartDetails { get; set; }
-        public virtual List<BillDetail> BillDetails { get; set; }
-        public virtual List<FeedBack> FeedBacks { get; set; }
-        public virtual Category Category { get; set; }
-        public virtual Brand Brand { get; set; }
+        public virtual List<Gallery>? Galleries { get; set; }
+        public virtual List<CartDetails>? CartDetails { get; set; }
+        public virtual List<BillDetail>? BillDetails { get; set; }
+        public virtual List<FeedBack>? FeedBacks { get; set; }
+        public virtual Category? Category { get; set; }
+        public virtual Brand? Brand { get; set; }
     }
 }
