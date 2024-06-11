@@ -57,5 +57,11 @@ namespace API.Controllers
             if (_ProductService.Delete(id)) return Ok();
             else return BadRequest();
         }
+        [HttpGet("Add-To-Cart")]
+        public ActionResult AddToCart(Guid id, int quantity, Guid UserID)
+        {
+            if (_Service.AddToCart(id, quantity, UserID)) return Ok();
+            else return BadRequest();
+        }
     }
 }
