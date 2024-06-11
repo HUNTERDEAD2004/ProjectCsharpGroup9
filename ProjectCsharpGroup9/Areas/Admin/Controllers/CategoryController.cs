@@ -9,13 +9,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     [Route("Admin/Category")]
     public class CategoryController : Controller
     {
-        // GET: CategoryController
-        //AppDbContext _dbContext;
         HttpClient _client = new HttpClient();
-        //public CategoryController()
-        //{
-        //    _dbContext = new AppDbContext();
-        //}
         [Route("Index")]
         public ActionResult Index()
         {
@@ -24,7 +18,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             List<Category> categories = JsonConvert.DeserializeObject<List<Category>>(response);
             return View(categories);
         }
-        [Route("Details/{Id}")]
+        [HttpGet("Details/{Id}")]
         public ActionResult Details(Guid Id)
         {
             string Url = $@"https://localhost:7276/api/Category/Get-ID-Category?id={Id}";
@@ -54,7 +48,6 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             return View(category);
         }
         [HttpPost("Edit/{Id}")]
-        //[ValidateAntiForgeryToken]
         public ActionResult Edit(Category category)
         {
             string Url = $@"https://localhost:7276/api/Category/Edit-Category";

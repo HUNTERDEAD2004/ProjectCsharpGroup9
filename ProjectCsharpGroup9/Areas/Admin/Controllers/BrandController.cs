@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
@@ -8,6 +9,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     public class BrandController : Controller
     {
         AppDbContext _dbContext;
+        HttpClient _client = new HttpClient();
         public BrandController()
         {
             _dbContext = new AppDbContext();
@@ -15,14 +17,18 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         [HttpGet("Index")]
         public IActionResult Index()
         {
-            var GetAll = _dbContext.Brands.ToList();
-            return View(GetAll);
+            string Url = $@"https://localhost:7276/api/Brand/Get-All-Brand";
+            var response = _client.GetStringAsync(Url).Result;
+            List<Brand> brands = JsonConvert.DeserializeObject<List<Brand>>(response);
+            return View(brands);
         }
         [HttpGet("Detail")]
         public ActionResult Detail(Guid id)
         {
-            var a = _dbContext.Brands.Find(id);
-            return View(a);
+            string Url = $@"https://localhost:7276/api/Brand/Get-ID-Brand?id={id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Brand brand = JsonConvert.DeserializeObject<Brand>(response);
+            return View(brand);
         }
         [HttpGet("Create")]
         public ActionResult Create()
@@ -41,8 +47,8 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
                 }
                 brand.BrandID = Guid.NewGuid();
                 brand.Icon = icon.FileName;
-                _dbContext.Brands.Add(brand);
-                _dbContext.SaveChanges();
+                string Url = $@"https://localhost:7276/api/Brand/Create-Brand";
+                var response = _client.PostAsJsonAsync(Url, brand).Result;
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -53,19 +59,21 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         [HttpGet("Edit/{id}")]
         public ActionResult Edit(Guid id)
         {
-            var a = _dbContext.Brands.Find(id);
-            return View(a);
+            string Url = $@"https://localhost:7276/api/Brand/Get-ID-Brand?id={id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Brand brand = JsonConvert.DeserializeObject<Brand>(response);
+            return View(brand);
         }
         [HttpPost("Edit/{id}")]
         public ActionResult Edit(Brand brand, IFormFile icon)
         {
             try
             {
-                var existingBrand = _dbContext.Brands.Find(brand.BrandID);
-                if (existingBrand == null) return NotFound();
-                // Cập nhật các thuộc tính khác của brand nếu có
-                existingBrand.Name = brand.Name;
-                existingBrand.Description = brand.Description;
+                //var existingBrand = _dbContext.Brands.Find(brand.BrandID);
+                //if (existingBrand == null) return NotFound();
+                //// Cập nhật các thuộc tính khác của brand nếu có
+                //existingBrand.Name = brand.Name;
+                //existingBrand.Description = brand.Description;
                 if (icon != null && icon.Length > 0)
                 {
                     string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "icon", icon.FileName);
@@ -73,10 +81,13 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
                     {
                         icon.CopyTo(stream);
                     }
-                    existingBrand.Icon = icon.FileName;
+                    //existingBrand.Icon = icon.FileName;
+                    brand.Icon = icon.FileName;
                 }
-                _dbContext.Brands.Update(existingBrand);
-                _dbContext.SaveChanges();
+                //_dbContext.Brands.Update(existingBrand);
+                //_dbContext.SaveChanges();
+                string Url = $@"https://localhost:7276/api/Brand/Edit-Brand";
+                var response = _client.PutAsJsonAsync(Url, brand).Result;
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -89,9 +100,8 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         {
             try
             {
-                var a = _dbContext.Brands.Find(id);
-                _dbContext.Brands.Remove(a);
-                _dbContext.SaveChanges();
+                string Url = $@"https://localhost:7276/api/Brand/Delete-Brand";
+                var response = _client.DeleteAsync(Url).Result;
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
