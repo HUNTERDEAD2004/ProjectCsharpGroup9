@@ -4,6 +4,6 @@ namespace API.IService
 {
     public interface IUserService
     {
-        bool UpdateUser(User user);
+        bool Create(User user);
     }
 }
