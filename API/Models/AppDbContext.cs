@@ -29,7 +29,7 @@ namespace ProjectCsharpGroup9.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)//cấu hình liên kết đến SQL
         {
             //optionsBuilder.UseSqlServer("Server=NIHONGGOO\\SQLEXPRESS;Database =ProjectCsharpGroup9; Trusted_Connection = True; TrustServerCertificate = True");
-            optionsBuilder.UseSqlServer("Server=MSI;Database =ProjectCsharpGroup9; Trusted_Connection = True; TrustServerCertificate = True");
+            optionsBuilder.UseSqlServer("Server=THANHCONGTU\\SQLEXPRESS01;Database =ProjectCsharpGroup9; Trusted_Connection = True; TrustServerCertificate = True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)//Cấu hình cho các đối tượng trong bảng CSDL
