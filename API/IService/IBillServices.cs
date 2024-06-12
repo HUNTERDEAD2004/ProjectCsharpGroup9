@@ -6,5 +6,7 @@ namespace API.IService
     {
         bool CancelPayment (Guid Id);
         bool BuyAgain(Guid Id);
+        List<Bill> GetBills (Guid UserID);
+        Bill GetBillsDetail (Guid UserID, Guid BillID);
     }
 }

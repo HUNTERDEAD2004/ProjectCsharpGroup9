@@ -44,5 +44,15 @@ namespace API.Controllers
             if (_Service.CancelPayment(Id)) return Ok();
             else return BadRequest();
         }
+        [HttpGet("Get-Bills")]
+        public ActionResult GetBills(Guid UserID)
+        {
+            return Ok(_Service.GetBills(UserID));
+        }
+        [HttpGet("Get-BillDetails")]
+        public ActionResult GetBillDetails(Guid UserID, Guid BillID)
+        {
+            return Ok(_Service.GetBillsDetail(UserID,BillID));
+        }
     }
 }

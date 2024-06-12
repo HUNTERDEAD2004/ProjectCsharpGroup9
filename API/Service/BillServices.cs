@@ -75,5 +75,17 @@ namespace API.Service
                 return false;
             }
         }
+
+        public List<Bill> GetBills(Guid UserID)
+        {
+            return _dbContext.Bills.Where(p=>p.UserId == UserID).ToList();
+        }
+
+        public Bill GetBillsDetail(Guid UserID, Guid BillID)
+        {
+            return _dbContext.Bills.Include(p => p.BillDetails)
+                .ThenInclude(p => p.Product)
+                .FirstOrDefault(p => p.BillId == BillID);
+        }
     }
 }
