@@ -10,10 +10,9 @@
         <h1 class="mb-4">Edit User</h1>
         <h4 class="text-muted">User Details</h4>
         <hr />
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
             <input type="hidden" asp-for="UserID" />
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -30,10 +29,9 @@
                     </div>
                 </div>
             </div>
-
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group" style="">
                         <label asp-for="RoleID" class="control-label"></label>
                         <select asp-for="RoleID" class="form-control" asp-items="ViewBag.RoleID"></select>
                         <span asp-validation-for="RoleID" class="text-danger"></span>

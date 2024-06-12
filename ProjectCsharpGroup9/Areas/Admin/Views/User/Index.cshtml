@@ -39,7 +39,6 @@
 								<th>Email</th>
 								<th>Số điện thoại</th>
 								<th>Address</th>
-								<th>Role</th>
 								<th>Tùy chỉnh</th>
 							</tr>
 						</thead>
@@ -65,25 +64,24 @@
 									<td>
 										@Html.DisplayFor(modelItem => item.Address)
 									</td>
-									<td>
-										<button class="btn btn-role text-dark">
-											@* Admin *@
-											@(item.RoleID == 1 ? "Admin" : "User")
-										</button>
-									</td>
-									<td>
-										<button class="btn btn-sm btn-primary btn-custom">
-											<a asp-area="admin" asp-controller="User" asp-action="Edit"
-												asp-route-id="@item.UserID" class="text-light text-decoration-none">
-												Edit
-											</a>
-										</button>
-										<button class="btn btn-sm btn-danger">
-											<a asp-area="Admin" asp-controller="User" asp-action="Delete"
-											   asp-route-id="@item.UserID" class="text-light text-decoration-none" new { onclick="return confirm('Bạn xác nhận muốn xóa?')">
-												Delete
-											</a>
-										</button>
+									<td class="text-center">
+										<div class="d-flex justify-content-center">
+											<button class="btn btn-sm btn-primary btn-custom pt-1 mr-1">
+												<a asp-area="admin" asp-controller="User" asp-action="Detail" asp-route-id="@item.UserID" class="text-light text-decoration-none">
+													Detail
+												</a>
+											</button>
+											<button class="btn btn-sm btn-primary btn-custom pt-1 mr-1">
+												<a asp-area="admin" asp-controller="User" asp-action="Edit" asp-route-id="@item.UserID" class="text-light text-decoration-none">
+													Edit
+												</a>
+											</button>
+											<button class="btn btn-sm btn-danger" onclick="return confirm('Bạn xác nhận muốn xóa?')">
+												<a asp-area="Admin" asp-controller="User" asp-action="Delete" asp-route-id="@item.UserID" class="text-light text-decoration-none">
+													Delete
+												</a>
+											</button>
+										</div>
 									</td>
 								</tr>
 							}

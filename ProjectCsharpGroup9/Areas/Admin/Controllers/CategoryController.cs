@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
@@ -8,25 +9,22 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     [Route("Admin/Category")]
     public class CategoryController : Controller
     {
-        // GET: CategoryController
-        AppDbContext _dbContext;
-
-        // Sua mot chut
-        public CategoryController()
-        {
-            _dbContext = new AppDbContext();
-        }
+        HttpClient _client = new HttpClient();
         [Route("Index")]
         public ActionResult Index()
         {
-            var GetAll = _dbContext.Categories.ToList();
-            return View(GetAll);
+            string Url = $@"https://localhost:7276/api/Category/Get-All-Category";
+            var response = _client.GetStringAsync(Url).Result;
+            List<Category> categories = JsonConvert.DeserializeObject<List<Category>>(response);
+            return View(categories);
         }
-        [Route("Details/{Id}")]
+        [HttpGet("Details/{Id}")]
         public ActionResult Details(Guid Id)
         {
-            var GetDetails = _dbContext.Categories.Find(Id);
-            return View(GetDetails);
+            string Url = $@"https://localhost:7276/api/Category/Get-ID-Category?id={Id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Category category  = JsonConvert.DeserializeObject<Category>(response);
+            return View(category);
         }
         [HttpGet("Create")]
         public ActionResult Create()
@@ -36,57 +34,31 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(Category category)
         {
-            try
-            {
-                category.CategoryID  =  Guid.NewGuid();
-                _dbContext.Categories.Add(category);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            string Url = $@"https://localhost:7276/api/Category/Create-Category";
+            var response = _client.PostAsJsonAsync(Url, category).Result;
+            return RedirectToAction("Index");
         }
         [HttpGet("Edit/{Id}")]
         public ActionResult Edit(Guid Id)
         {
-            var GetEdit = _dbContext.Categories.Find(Id);
-            return View(GetEdit);
+            string Url = $@"https://localhost:7276/api/Category/Get-ID-Category?id={Id}";
+            var response = _client.GetStringAsync(Url).Result;
+            Category category = JsonConvert.DeserializeObject<Category>(response);
+            return View(category);
         }
         [HttpPost("Edit/{Id}")]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(Category category)
         {
-            try
-            {
-                var GetEdit = _dbContext.Categories.Find(category.CategoryID);
-                GetEdit.Name = category.Name;
-                GetEdit.Description = category.Description;
-                _dbContext.Categories.Update(GetEdit);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            string Url = $@"https://localhost:7276/api/Category/Edit-Category";
+            var response = _client.PutAsJsonAsync(Url, category).Result;
+            return RedirectToAction("Index");
         }
         [Route("Delete/{Id}")]
         public ActionResult Delete(Guid Id)
         {
-            try
-            {
-                var GetDelete = _dbContext.Categories.Find(Id);
-                _dbContext.Categories.Remove(GetDelete);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return BadRequest();
-            }
+            string Url = $@"https://localhost:7276/api/Category/Delete-Category?id={Id}";
+            var response = _client.DeleteAsync(Url).Result;
+            return RedirectToAction("Index");
         }
     }
 }

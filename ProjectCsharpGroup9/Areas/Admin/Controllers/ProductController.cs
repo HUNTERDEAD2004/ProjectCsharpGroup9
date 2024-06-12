@@ -1,4 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectCsharpGroup9.Models;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 {
@@ -6,16 +13,15 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     [Route("Admin/Product")]
     public class ProductController : Controller
     {
-        [Route("Index")]
-        public IActionResult Index() //Giao diện product-list
+        private readonly string _apiBaseUrl = "https://localhost:7276/api/Product";
+        HttpClient _httpClient;
+        
+        public ProductController()
         {
-            return View();
+            _httpClient = new HttpClient();
         }
+        
 
-        [Route("ViewCategory")]
-        public IActionResult ViewCategory()
-        {
-            return View();
-        }
+        
     }
 }

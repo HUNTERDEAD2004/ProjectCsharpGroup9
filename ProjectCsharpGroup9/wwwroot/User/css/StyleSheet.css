@@ -7,7 +7,7 @@
 body {
     background-image: url("../images/futurism-perspective-digital-nomads-lifestyle.jpg");
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: unset;
 }
 .alert {
     position: relative;

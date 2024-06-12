@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 using System.Drawing.Printing;
+using System.Net.Http;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 {
@@ -9,6 +12,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     public class UserController : Controller
     {
         AppDbContext _dbContext;
+        HttpClient _client = new HttpClient();
         public UserController()
         {
             _dbContext = new AppDbContext();
@@ -16,37 +20,74 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         [Route("Index")]
         public IActionResult Index(string find) // danh sách tài khoản
         {
-            var a = _dbContext.Users.ToList();
-            if(string.IsNullOrEmpty(find)) return View(a);
+            string Url = $@"https://localhost:7276/api/User/Get-All-User";
+            var response = _client.GetStringAsync(Url).Result;
+            List<User> users = JsonConvert.DeserializeObject<List<User>>(response);
+
+            if (string.IsNullOrEmpty(find)) return View(users);
             else
             {
-                var findData = _dbContext.Users.Where(p=>p.UserName.Contains(find)).ToList();
-                if(findData.Count == 0) return View(a);
-                else return View(findData);
+                var findData = users.Where(p=>p.UserName.Contains(find)).ToList();
+                return View(findData);
+            }
+        }
+        public void GetRole(int selected)
+        {
+            var role = _dbContext.Roles.ToList();
+            SelectList listItems = new SelectList(role, "RoleID", "RoleName", selected);
+            ViewBag.RoleID = listItems;
+        }
+        [HttpGet("{id}")]
+        [Route("Detail/{id}")]
+        public IActionResult Detail(Guid id)
+        {
+            try
+            {
+                string url = $"https://localhost:7276/api/User/Get-ID-User?id={id}";
+                HttpResponseMessage response = _client.GetAsync(url).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseData = response.Content.ReadAsStringAsync().Result;
+                    User user = JsonConvert.DeserializeObject<User>(responseData);
+                    return View(user);
+                }
+                else
+                {
+                    TempData["Error"] = "Không thể truy xuất dữ liệu người dùng từ API.";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Error: {ex.Message}";
+                return RedirectToAction("Index", "Home");
             }
         }
         [HttpGet("{id}")]
         [Route("Edit/{id}")]
         public IActionResult Edit(Guid id) // view sửa tài khoản
         {
-            var a = _dbContext.Users.Find(id);
-            return View(a);
+            GetRole(0);
+            string Url = $@"https://localhost:7276/api/User/Get-ID-User?id={id}";
+            var response = _client.GetStringAsync(Url).Result;
+            User user = JsonConvert.DeserializeObject<User>(response);
+            return View(user);
         }
-        [HttpPost]
+        [HttpPost("Edit/{id}")]
         public IActionResult Edit(User user)//action sửa tài khoản
         {
-            _dbContext.Users.Update(user);
-            _dbContext.SaveChanges();
+            string Url = $@"https://localhost:7276/api/User/Edit-User";
+            var response = _client.PutAsJsonAsync(Url, user).Result;
+            //Console.WriteLine(response);
             return RedirectToAction("Index");
         }
         [Route("Delete/{id}")]
-        public IActionResult Delete(Guid id)//action xóa tài khoản
+        public async Task<IActionResult> Delete(Guid id)//action xóa tài khoản
         {
-            var a = _dbContext.Users.Find(id);
-            _dbContext.Users.Remove(a);
-            _dbContext.SaveChanges();
-			TempData["Message"] = "người dùng đã được xóa";
-			return RedirectToAction("Index");
+            string Url = $@"https://localhost:7276/api/User/Delete-User?id={id}";
+            var response = await _client.DeleteAsync(Url);
+            return RedirectToAction("Index");
         }
     }
 }
