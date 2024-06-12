@@ -59,10 +59,18 @@ namespace API.Service
 
         public List<CartDetails> GetCartUser(Guid UserID)
         {
-            return _appDbContext.CartsDetails
-                .Include(p=>p.Product)
-                .Where(p=>p.CartID == UserID)
-                .ToList();
+            var cartItem = _appDbContext.CartsDetails
+                .Include(p => p.Product)
+                .Where(p => p.CartID == UserID)
+                .Select(p => new CartDetails
+                {
+                    CartDetailID = p.CartDetailID,
+                    ProductID = p.ProductID,
+                    CartID = p.CartID,
+                    Quantity = p.Quantity,
+                    Status = p.Status
+                }).ToList();
+            return cartItem;
         }
 
         public bool RemoveFromCart(Guid id)

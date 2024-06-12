@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ProjectCsharpGroup9.Models.CartDetails>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CartDetailID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CartID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CartDetailID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CartID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                <td>
+                    <form asp-action="RemoveFromCart" asp-route-id="@item.CartDetailID" method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this item from your cart?');">
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<form asp-controller="CartDetail" asp-action="Checkout" method="post">
+    <button class="btn btn-success" type="submit">Checkout</button>
+</form>
