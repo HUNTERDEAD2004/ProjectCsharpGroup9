@@ -45,5 +45,6 @@
         <p>Have an account?</p>
         <a asp-controller="User" asp-action="Login">Login</a>
     </div>
+    @Html.ValidationSummary(true, "", new { @style = "color: red" })
 </form>
 

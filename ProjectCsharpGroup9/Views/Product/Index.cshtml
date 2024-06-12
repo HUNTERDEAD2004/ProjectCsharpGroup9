@@ -9,42 +9,6 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-8 offset-sm-2 text-center colorlib-heading">
-                <h2>Bán chạy</h2>
-            </div>
-        </div>
-        <div class="row row-pb-md">
-            <div class="col-lg-3 mb-4 text-center">
-                <div class="product-entry border">
-                    <a href="#" class="prod-img">
-                        <img src="images/item-1.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template">
-                    </a>
-                    <div class="desc">
-                        <h2><a href="#">Women's Boots Shoes Maca</a></h2>
-                        <span class="price">$139.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 offset-sm-2 text-center colorlib-heading">
-                <h2>Mới ra</h2>
-            </div>
-        </div>
-        <div class="row row-pb-md">
-            <div class="col-lg-3 mb-4 text-center">
-                <div class="product-entry border">
-                    <a href="#" class="prod-img">
-                        <img src="images/item-1.jpg" class="img-fluid" alt="Free html5 bootstrap 4 template">
-                    </a>
-                    <div class="desc">
-                        <h2><a href="#">Women's Boots Shoes Maca</a></h2>
-                        <span class="price">$139.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 offset-sm-2 text-center colorlib-heading">
                 <h2>Sản phẩm</h2>
             </div>
         </div>
@@ -53,15 +17,16 @@
                 <div class="product-entry border">
                     @foreach (var item in Model)
                     {
-                       @foreach (var gallery in item.Galleries)
+                       @* @foreach (var gallery in item.Galleries)
                         {
                             <a href="#" class="prod-img">
                                 <img src="@Url.Content(gallery.ImagePath)" class="img-fluid" alt="@gallery.Description">
                             </a>
-                        }
+                        } *@
                         <div class="desc">
                             <h2><a href="#">@Html.DisplayFor(modelItem => item.ProductName)</a></h2>
-                            <span class="price">@Html.DisplayFor(modelItem => item.RegularPrice)đ</span>
+                            <span class="price">@Html.DisplayFor(modelItem => item.DiscountPrice)đ</span>
+                            <span class="price text-secondary">Số lượng: @Html.DisplayFor(modelItem => item.RegularPrice)đ</span>
                             @using(Html.BeginForm("AddtoCart","Product",FormMethod.Post)){
                                 @Html.Hidden("id", item.ProductID)
                                 <div class="form-group">

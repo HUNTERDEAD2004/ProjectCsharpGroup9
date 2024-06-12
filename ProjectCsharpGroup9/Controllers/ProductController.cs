@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
@@ -33,6 +31,7 @@ namespace ProjectCsharpGroup9.Controllers
             if (string.IsNullOrEmpty(loginData)) return RedirectToAction("Login", "User");
             else
             {
+                quantity = 1;
                 var user = JsonConvert.DeserializeObject<User>(loginData);
                 string Url = $@"https://localhost:7276/api/Product/Add-To-Cart?id={id}&quantity={quantity}&UserID={user.UserID}";
                 var response = _client.GetStringAsync(Url).Result;

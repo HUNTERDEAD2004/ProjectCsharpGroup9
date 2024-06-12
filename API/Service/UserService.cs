@@ -15,6 +15,20 @@ namespace API.Service
         {
             try
             {
+                if (_dbContext.Users.Any(u => u.UserName == user.UserName))
+                {
+                    return false;
+                }
+
+                if (_dbContext.Users.Any(u => u.Email == user.Email))
+                {
+                    return false;
+                }
+
+                if (_dbContext.Users.Any(u => u.PhoneNumber == user.PhoneNumber))
+                {
+                    return false;
+                }
                 _dbContext.Users.Add(user);
                 //đăng ký thì sẽ tạo luôn giỏ hàng
                 var CartUser = new Cart()
@@ -40,6 +54,45 @@ namespace API.Service
             {
                 return false;
             }
+        }
+        public int CalculateAge(DateTime birthDate)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - birthDate.Year;
+
+            if (birthDate.Date > today.AddYears(-age)) age--;
+
+            return age;
+        }
+
+        public bool Update(User user)
+        {
+            var existingUser = _dbContext.Users.FirstOrDefault(u => u.UserID == user.UserID);
+            if (existingUser == null)
+            {
+                return false;
+            }
+
+            if (_dbContext.Users.Any(u => u.UserName == user.UserName && u.UserID != user.UserID))
+            {
+                return false;
+            }
+
+            if (_dbContext.Users.Any(u => u.Email == user.Email && u.UserID != user.UserID))
+            {
+                return false;
+            }
+
+            if (_dbContext.Users.Any(u => u.PhoneNumber == user.PhoneNumber && u.UserID != user.UserID))
+            {
+                return false;
+            }
+
+            _dbContext.Entry(existingUser).CurrentValues.SetValues(user);
+
+            _dbContext.SaveChanges();
+
+            return true;
         }
     }
 }

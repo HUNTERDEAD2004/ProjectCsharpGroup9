@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ProjectCsharpGroup9.Models.Bill>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">Product</h5>
+                <div class="">
+                    <div class="">
+                        <div class="searchbar">
+                            <input class="search_input" type="text" name="" placeholder="Search...">
+                            <a href="#" class="search_icon"><i class="ti ti-search"></i></a>
+                            <button class="btn btn-success add_button position-absolute">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive pt-4">
+                    <table class="table table-custom table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BillId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CreateDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Total)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BillId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreateDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Total)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("CancelPayment", "CancelPayment", new { id = item.BillId }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.BillId }) |
+                                        @Html.ActionLink("BuyAgain", "BuyAgain", new { id = item.BillId })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,10 +4,7 @@ using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 {
@@ -15,7 +12,12 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     [Route("Admin/Product")]
     public class ProductController : Controller
     {
+        AppDbContext _dbContext;
         HttpClient _client = new HttpClient();
+        public ProductController()
+        {
+            _dbContext = new AppDbContext();
+        }
         [HttpGet("Index")]
         public ActionResult Index()
         {
@@ -68,6 +70,5 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
             var response = _client.DeleteAsync(Url).Result;
             return RedirectToAction("Index");
         }
-
     }
 }

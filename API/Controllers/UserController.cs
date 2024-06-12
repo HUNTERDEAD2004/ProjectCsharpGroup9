@@ -35,6 +35,12 @@ namespace API.Controllers
         [HttpPost("Create-User")]
         public ActionResult Create(User user)
         {
+            var age = _Service.CalculateAge(user.BirthDay);
+            if (age <= 10)
+            {
+                ModelState.AddModelError("Age", "Age must be greater than 10.");
+                return BadRequest(ModelState);
+            }
             if (_Service.Create(user)) return Ok();
             else return BadRequest();
         }
@@ -42,7 +48,13 @@ namespace API.Controllers
         [HttpPut("Edit-User")]
         public ActionResult Edit(User user)
         {
-            if (_UserService.Upate(user)) return Ok();
+            var age = _Service.CalculateAge(user.BirthDay);
+            if (age <= 10)
+            {
+                ModelState.AddModelError("Age", "Age must be greater than 10.");
+                return BadRequest(ModelState);
+            }
+            if (_Service.Update(user)) return Ok();
             else return BadRequest();
         }
         [HttpDelete("Delete-User")]

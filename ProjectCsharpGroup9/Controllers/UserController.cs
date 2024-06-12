@@ -26,6 +26,27 @@ namespace ProjectCsharpGroup9.Controllers
 			{
                 user.UserID = Guid.NewGuid();
                 user.RoleID = 2;
+                if (CalculateAge(user.BirthDay) < 15)
+                {
+                    ModelState.AddModelError("BirthDay", "Tuổi của bạn chưa đủ 15.");
+                    return View(user);
+                }
+                if (_dbContext.Users.Any(u => u.UserName == user.UserName))
+                {
+                    ModelState.AddModelError("UserName", "Tên đăng nhập đã tồn tại.");
+                    return View(user);
+                }
+                if (_dbContext.Users.Any(u => u.Email == user.Email))
+                {
+                    ModelState.AddModelError("Email", "Email đã tồn tại.");
+                    return View(user);
+                }
+                if (_dbContext.Users.Any(u => u.PhoneNumber == user.PhoneNumber))
+                {
+                    ModelState.AddModelError("PhoneNumber", "Số điện thoại đã tồn tại.");
+                    return View(user);
+                }
+
                 string Url = $@"https://localhost:7276/api/User/Create-User";
 				var response = _client.PostAsJsonAsync(Url, user).Result;
 				if (response.IsSuccessStatusCode)
@@ -68,7 +89,7 @@ namespace ProjectCsharpGroup9.Controllers
                     }
                     else if (data.RoleID == 2)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Product");
                     }
                     else
                     {
@@ -83,5 +104,12 @@ namespace ProjectCsharpGroup9.Controllers
 			HttpContext.Session.Remove("user");
 			return RedirectToAction("Login");
 		}
-	}
+        private int CalculateAge(DateTime birthDate)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - birthDate.Year;
+            if (birthDate.Date > today.AddYears(-age)) age--;
+            return age;
+        }
+    }
 }
