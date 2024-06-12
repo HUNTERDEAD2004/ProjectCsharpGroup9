@@ -48,6 +48,5 @@ namespace API.Controllers
             if (_CategoryService.Delete(id)) return Ok();
             else return BadRequest();
         }
-
     }
 }
