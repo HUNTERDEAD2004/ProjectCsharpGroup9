@@ -15,15 +15,15 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         {
             string Url = $@"https://localhost:7276/api/Category/Get-All-Category";
             var response = _client.GetStringAsync(Url).Result;
-            List<Category> categories = JsonConvert.DeserializeObject<List<Category>>(response);
-            return View(categories);
+           var Data  = JsonConvert.DeserializeObject<List<Category>>(response);
+            return View(Data);
         }
         [HttpGet("Details/{Id}")]
         public ActionResult Details(Guid Id)
         {
             string Url = $@"https://localhost:7276/api/Category/Get-ID-Category?id={Id}";
             var response = _client.GetStringAsync(Url).Result;
-            Category category  = JsonConvert.DeserializeObject<Category>(response);
+            var category  = JsonConvert.DeserializeObject<Category>(response);
             return View(category);
         }
         [HttpGet("Create")]
