@@ -49,6 +49,7 @@ namespace API.Service
         {
             try
             {
+                product.InputDay = DateTime.Now;
                 _dbcontext.Products.Add(product);
                 Gallery gallery = new Gallery()
                 {

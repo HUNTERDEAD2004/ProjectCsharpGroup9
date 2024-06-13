@@ -166,7 +166,7 @@
                                             <i class="ti ti-list-check fs-6"></i>
                                             <p class="mb-0 fs-3">My Task</p>
                                         </a>
-                                        <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        <a asp-controller="User" asp-action="LogOut" class="btn btn-outline-primary mx-3 mt-2 d-block dropdown-item">Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -175,7 +175,9 @@
                 </nav>
             </header>
             <!--  Header End -->
-            @RenderBody()
+            <div style="padding-top: 5rem">
+                @RenderBody()
+            </div>
         </div>
     </div>
     <script src="~/Admin/assets/libs/jquery/dist/jquery.min.js"></script>

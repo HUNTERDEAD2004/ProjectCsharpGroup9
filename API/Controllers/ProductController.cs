@@ -40,7 +40,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Create-Product")]
-        public ActionResult Create([FromForm] Product product)
+        public ActionResult Create(Product product)
         {
             if (_Service.Create(product)) return Ok();
             else return BadRequest();

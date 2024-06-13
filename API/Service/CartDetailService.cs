@@ -7,55 +7,64 @@ namespace API.Service
     public class CartDetailService : ICartDetailService
     {
         AppDbContext _appDbContext;
+        
         public CartDetailService()
         {
             _appDbContext = new AppDbContext();
         }
-        public bool CheckOut(Guid UserID)
+        public bool CheckOut(Guid userId)
         {
-            var user = _appDbContext.Users.FirstOrDefault(u => u.UserID == UserID);
-            if(user == null) return false;
-            else
+            var user = _appDbContext.Users.FirstOrDefault(u => u.UserID == userId);
+            if (user == null)
             {
-                var CartItem = _appDbContext.CartsDetails.Where(p => p.CartID == UserID).ToList();
-                if (CartItem.Count == 0) return false;
-                var bill = new Bill()
-                {
-                    BillId = Guid.NewGuid(),
-                    UserId = UserID,
-                    CreateDate = DateTime.Now,
-                    Total = 0,
-                    Status = 1,
-                    BillDetails = new List<BillDetail>()
-                };
-                _appDbContext.Bills.Add(bill);
-                foreach (var item in CartItem)
-                {
-                    var Product = _appDbContext.Products.Find(item.ProductID);
-                    if(Product.Quantity < item.Quantity)
-                    {
-                        return false;
-                    }
-                    Product.Quantity -= item.Quantity;
-                    var billDetail = new BillDetail()
-                    {
-                        BillDetailId = Guid.NewGuid(),
-                        BillId = bill.BillId,
-                        ProductId = item.ProductID,
-                        Quantity = item.Quantity,
-                        ProductPrice = Product.DiscountPrice,
-                        Status = 1
-                    };
-                    bill.BillDetails.Add(billDetail);
-                    _appDbContext.BillDetails.Add(billDetail);
-                }
-                bill.Total = bill.BillDetails.Sum(p => p.ProductPrice * p.Quantity);
-                _appDbContext.CartsDetails.RemoveRange(CartItem);
-                _appDbContext.Bills.Add(bill);
-                _appDbContext.SaveChanges();
-                return true;
+                return false;
             }
+            var cartItems = _appDbContext.CartsDetails.Where(c => c.CartID == userId).ToList();
+            if (cartItems.Count == 0)
+            {
+                return false; 
+            }
+
+            var bill = new Bill()
+            {
+                BillId = Guid.NewGuid(),
+                UserId = userId,
+                CreateDate = DateTime.Now,
+                Total = 0, 
+                Status = 1,
+                BillDetails = new List<BillDetail>()
+            };
+
+            foreach (var cartItem in cartItems)
+            {
+                var product = _appDbContext.Products.Find(cartItem.ProductID);
+                if (product == null || product.Quantity < cartItem.Quantity)
+                {
+                    return false;
+                }
+                product.Quantity -= cartItem.Quantity;
+
+                var billDetail = new BillDetail()
+                {
+                    BillDetailId = Guid.NewGuid(),
+                    BillId = bill.BillId,
+                    ProductId = cartItem.ProductID,
+                    Quantity = cartItem.Quantity,
+                    ProductPrice = product.DiscountPrice,
+                    Status = 1 // Đang xử lý
+                };
+
+                bill.BillDetails.Add(billDetail);
+                _appDbContext.BillDetails.Add(billDetail);
+            }
+            bill.Total = bill.BillDetails.Sum(bd => bd.ProductPrice * bd.Quantity);
+            _appDbContext.CartsDetails.RemoveRange(cartItems);
+            _appDbContext.Bills.Add(bill);
+            _appDbContext.SaveChanges();
+
+            return true;
         }
+
 
         public List<CartDetails> GetCartUser(Guid UserID)
         {

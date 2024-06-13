@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
+using System.Drawing.Drawing2D;
 
 namespace ProjectCsharpGroup9.Areas.Admin.Controllers
 {
@@ -9,6 +11,7 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
     [Route("Admin/Category")]
     public class CategoryController : Controller
     {
+        AppDbContext _dbContext = new AppDbContext();
         HttpClient _client = new HttpClient();
         [Route("Index")]
         public ActionResult Index()
@@ -35,6 +38,11 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Category category)
         {
+            if (_dbContext.Brands.Any(u => u.Name == category.Name))
+            {
+                ModelState.AddModelError("Name", "Đã tồn tại");
+                return View();
+            }
             string Url = $@"https://localhost:7276/api/Category/Create-Category";
             var response = _client.PostAsJsonAsync(Url, category).Result;
             return RedirectToAction("Index");
@@ -50,6 +58,11 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         [HttpPost("Edit/{Id}")]
         public ActionResult Edit(Category category)
         {
+            if (_dbContext.Brands.Any(u => u.Name == category.Name))
+            {
+                ModelState.AddModelError("Name", "Đã tồn tại");
+                return View();
+            }
             string Url = $@"https://localhost:7276/api/Category/Edit-Category";
             var response = _client.PutAsJsonAsync(Url, category).Result;
             return RedirectToAction("Index");

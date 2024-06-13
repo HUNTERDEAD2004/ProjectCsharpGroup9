@@ -99,11 +99,11 @@ namespace ProjectCsharpGroup9.Controllers
                 }
 			}
 		}
-		public IActionResult LogOut() //action đăng xuất
+		public IActionResult LogOut() 
 		{
-			HttpContext.Session.Remove("user");
-			return RedirectToAction("Login");
-		}
+            HttpContext.Session.Remove("user"); // Xóa thông tin đăng nhập từ session
+            return RedirectToAction("Login");
+        }
         private int CalculateAge(DateTime birthDate)
         {
             var today = DateTime.Today;

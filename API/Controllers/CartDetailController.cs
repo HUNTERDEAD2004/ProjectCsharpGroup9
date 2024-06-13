@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectCsharpGroup9.Models;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace API.Controllers
 {
@@ -59,7 +61,41 @@ namespace API.Controllers
             if(_Service.CheckOut(UserID)) return Ok(); 
             else return BadRequest();
         }
-		[HttpPost("Update-CartDetail")]
+        [HttpGet("CheckOut-View")]
+        public IActionResult CheckoutView(Guid billId, [FromQuery] Guid userId)
+        {
+            // Validate user ID or handle authorization if needed
+            var order = _dbContext.Bills
+                .Include(o => o.BillDetails)
+                .ThenInclude(od => od.Product)
+                .FirstOrDefault(o => o.UserId == userId && o.BillId == billId);
+
+            if (order == null || order.BillDetails == null)
+            {
+                return NotFound(); // Return 404 Not Found status
+            }
+
+            decimal totalAmount = order.Total;
+
+            // Create an anonymous object to return as JSON
+            var result = new
+            {
+                Order = order,
+                TotalAmount = totalAmount
+            };
+
+            // Serialize the result to JSON
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                MaxDepth = 32 // Increase max depth if needed
+            };
+
+            var jsonResult = JsonSerializer.Serialize(result, options);
+
+            return Ok(jsonResult);
+        }
+        [HttpPost("Update-CartDetail")]
 		public ActionResult UpdateCartDetail([FromBody] CartDetails cartDetail)
 		{
 			try

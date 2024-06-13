@@ -40,6 +40,11 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
         {
             try
             {
+                if (_dbContext.Brands.Any(u => u.Name == brand.Name))
+                {
+                    ModelState.AddModelError("Name", "Đã tồn tại");
+                    return View();
+                }
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "icon", icon.FileName);
                 var stream = new FileStream(path, FileMode.Create);
                 {
@@ -74,6 +79,11 @@ namespace ProjectCsharpGroup9.Areas.Admin.Controllers
                 //// Cập nhật các thuộc tính khác của brand nếu có
                 //existingBrand.Name = brand.Name;
                 //existingBrand.Description = brand.Description;
+                if (_dbContext.Brands.Any(u => u.Name == brand.Name))
+                {
+                    ModelState.AddModelError("Name", "Đã tồn tại");
+                    return View();
+                }
                 if (icon != null && icon.Length > 0)
                 {
                     string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "icon", icon.FileName);

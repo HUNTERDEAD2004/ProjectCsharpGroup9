@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProjectCsharpGroup9.Models;
+using System.Net;
 
 namespace ProjectCsharpGroup9.Controllers
 {
@@ -48,14 +49,70 @@ namespace ProjectCsharpGroup9.Controllers
             var response = _client.GetStringAsync(Url).Result;
             return RedirectToAction("Index");
         }
+        /*public IActionResult CheckoutView(Guid billId)
+        {
+            try
+            {
+                var userIdString = HttpContext.Session.GetString("user");
+                if (userIdString == null)
+                {
+                    return RedirectToAction("Login", "User");
+                }
+
+                var user = JsonConvert.DeserializeObject<User>(userIdString);
+
+                var requestUrl = $@"https://localhost:7276/api/CheckOut-View/billId={billId}?userId={user.UserID}";
+
+                var response = _client.GetAsync(requestUrl).Result; // Blocking call
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+
+                    var result = JsonConvert.DeserializeObject<dynamic>(content);
+
+                    return View(result);
+                }
+                else if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return View("NotFound");
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("Login", "User");
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode);
+                }
+            }
+            catch (HttpRequestException)
+            {
+                return StatusCode(500); // Internal Server Error
+            }
+        }*/
+
         public ActionResult CheckOut()
         {
             var loginData = HttpContext.Session.GetString("user");
-            if (loginData == null) return RedirectToAction("Login","User");
+            if (loginData == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
             var user = JsonConvert.DeserializeObject<User>(loginData);
-            string Url = $@"https://localhost:7276/api/CartDetail/CheckOut?UserID={user.UserID}";
+            string Url = $"https://localhost:7276/api/CartDetail/CheckOut?UserID={user.UserID}";
+
             var response = _client.GetStringAsync(Url).Result;
-            return RedirectToAction("Index");
+
+            if (Guid.TryParse(response, out Guid billId))
+            {
+                return RedirectToAction("Index");
+            }
+			else
+			{
+                return View("NotFound");
+            }
         }
 		[HttpPost]
 		public ActionResult UpdateCartDetail(Guid cartDetailID, int quantity)
@@ -95,5 +152,6 @@ namespace ProjectCsharpGroup9.Controllers
 				return StatusCode(500, $"Internal server error: {ex.Message}");
 			}
 		}
-	}
+        
+    }
 }
